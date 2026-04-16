@@ -1,0 +1,21 @@
+services:
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env          # loads GROQ_API_KEY from your .env file
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://backend:8000   # frontend reaches backend by service name
+    depends_on:
+      - backend       # backend starts first
